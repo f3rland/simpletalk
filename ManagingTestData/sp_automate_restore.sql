@@ -84,8 +84,10 @@ AS
 		IF ((@DebugLevel = 1 OR @DebugLevel = 3) AND (@DatabaseName != @dbName))
 			PRINT 'Database is being Restored to a new database: ' + @dbName
 			
-	IF (@ServerName is NULL)
-		SET @ServerName = CAST(SERVERPROPERTY('ServerName') AS nvarchar)
+        IF (@ServerName is NULL)
+            SET @ServerName = CAST(SERVERPROPERTY('servername') AS nvarchar(max))
+
+        SET @ServerName = REPLACE(@ServerName,'\','$')
 	
         SET @backupPath = @UncPath + '\' + @ServerName + '\' + @backupDBName
             + '\FULL\'
